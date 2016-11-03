@@ -1,4 +1,4 @@
-module Mek exposing (Mek, weightClass)
+module Mek exposing (Mek, weightClass, validWeight)
 
 
 import TechBase exposing (TechBase)
@@ -11,10 +11,6 @@ type alias Mek =
     }
 
 
-{-| Gets the name of the weight class for a given mek
-  TODO: I want to make it so that particular weights are not valid; and to
-        reduce the amount of guard code that's going on here.
--}
 weightClass : Mek -> String
 weightClass mek =
     if mek.weight >= 20 && mek.weight <= 35 then
@@ -23,5 +19,35 @@ weightClass mek =
         "Medium"
     else if mek.weight >= 60 && mek.weight <= 75 then
         "Heavy"
-    else
+    else if mek.weight >= 80 && mek.weight <= 100 then
         "Assault"
+    else
+        "Invalid"
+
+validWeight : Mek -> (Bool, String)
+validWeight mek =
+    let
+        validations = (validWeightRange mek, validWeightFactor mek)
+    in
+        case validations of
+            (False, False) ->
+                (False, "This mek's weight is not a factor of 5, and outside of valid ranges!")
+            (False, _) ->
+                (False, "This mek's weight is outside of valid ranges!")
+            (_, False) ->
+                (False, "This mek's weight is not a factor of 5!")
+            _ ->
+                (True, "")
+-- UNEXPOSED --
+
+{-| Validates that a Mek's weight is a factor of 5
+ -}
+validWeightFactor : Mek -> Bool
+validWeightFactor mek =
+    mek.weight % 5 == 0
+
+{-| Validates that a Mek is within the correct weight range.
+-}
+validWeightRange : Mek -> Bool
+validWeightRange mek =
+    mek.weight >= 20 && mek.weight <= 100
