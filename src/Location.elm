@@ -1,4 +1,12 @@
-module Location exposing (..)
+module Location exposing ( Location
+                         , SixSlot
+                         , TwelveSlot
+                         , arm
+                         , centerTorso
+                         , head
+                         , leg
+                         , sideTorso
+                         )
 
 import Component exposing (..)
 
