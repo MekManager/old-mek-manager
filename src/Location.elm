@@ -1,6 +1,5 @@
-module Location exposing ( Location
-                         , SixSlot
-                         , TwelveSlot
+module Location exposing ( SixSlotComponent
+                         , TwelveSlotComponent
                          , arm
                          , centerTorso
                          , head
@@ -9,11 +8,14 @@ module Location exposing ( Location
                          )
 
 import Component exposing (..)
+import Maybe exposing (Maybe)
 
 
-type Location = SixSlot | TwelveSlot
+type Location
+    = SixSlot SixSlotComponent
+    | TwelveSlot TwelveSlotComponent
 
-type alias SixSlot =
+type alias SixSlotComponent =
     { first : Maybe Component
     , second : Maybe Component
     , third : Maybe Component
@@ -22,83 +24,95 @@ type alias SixSlot =
     , sixth : Maybe Component
     }
 
-type alias TwelveSlot =
-    { top : SixSlot
-    , bottom : SixSlot
+type alias TwelveSlotComponent =
+    { top : SixSlotComponent
+    , bottom : SixSlotComponent
     }
 
-{-| Factory function returning a default arm
+{- Factory function returning a default arm
 -}
-arm : TwelveSlot
+arm : TwelveSlotComponent
 arm =
-    TwelveSlot
-        SixSlot
-            Just Shoulder
-            Just UpperArmActuator
-            Just LowerArmActuator
-            Just HandActuator
+    TwelveSlotComponent
+        (SixSlotComponent
+            (Just Component.Shoulder)
+            (Just Component.UpperArmActuator)
+            (Just Component.LowerArmActuator)
+            (Just Component.HandActuator)
             Nothing
-            Nothing
+            Nothing)
         empty
 
-{-| Factory function returning a default center torso
+{- Factory function returning a default center torso
 -}
-centerTorso : TwelveSlot
+centerTorso : TwelveSlotComponent
 centerTorso =
-    TwelveSlot
-        SixSlot
-            Just Engine
-            Just Engine
-            Just Engine
-            Just Gyro
-            Just Gyro
-            Just Gyro
-        SixSlot
-            Just Gyro
-            Just Engine
-            Just Engine
-            Just Engine
+    TwelveSlotComponent
+        (SixSlotComponent
+            (Just Component.Engine)
+            (Just Component.Engine)
+            (Just Component.Engine)
+            (Just Component.Gyro)
+            (Just Component.Gyro)
+            (Just Component.Gyro))
+        (SixSlotComponent
+            (Just Component.Gyro)
+            (Just Component.Engine)
+            (Just Component.Engine)
+            (Just Component.Engine)
             Nothing
-            Nothing
+            Nothing)
 
 {-| Factory function returning a default head
 -}
-head : SixSlot
+head : SixSlotComponent
 head =
-    SixSlot
-        Just LifeSupport
-        Just Sensors
-        Just Cockpit
+    SixSlotComponent
+        (Just Component.LifeSupport)
+        (Just Component.Sensors)
+        (Just Component.Cockpit)
         Nothing
-        Just Sensors
-        Just LifeSupport
+        (Just Component.Sensors)
+        (Just Component.LifeSupport)
 
-{-| Factory function returning a default leg
+{- Factory function returning a default leg
 -}
-leg : SixSlot
+leg : SixSlotComponent
 leg =
-    SixSlot
-        Just Hip
-        Just UpperLegActuator
-        Just LowerLegActuator
-        Just FootActuator
+    SixSlotComponent
+        (Just Component.Hip)
+        (Just Component.UpperLegActuator)
+        (Just Component.LowerLegActuator)
+        (Just Component.FootActuator)
         Nothing
         Nothing
 
-{-| Factory function returning a default side torso
+{- Factory function returning a default side torso
 -}
-sideTorso : TwelveSlot
+sideTorso : TwelveSlotComponent
 sideTorso =
-    TwelveSlot
+    TwelveSlotComponent
         empty
         empty
+
+toList : Location -> List (Maybe Component)
+toList location =
+    case location of
+        SixSlot component ->
+            sixToList component
+        TwelveSlot component ->
+            sixToList component.top ++ sixToList component.bottom
+
+sixToList : SixSlotComponent -> List (Maybe Component)
+sixToList c =
+    [c.first] ++ [c.second] ++ [c.third] ++ [c.fourth] ++ [c.fifth] ++ [c.sixth]
 
 -- UNEXPOSED --
 {-| Factory function returning an empty SixSlot
 -}
-empty : SixSlot
+empty : SixSlotComponent
 empty =
-    SixSlot
+    SixSlotComponent
         Nothing
         Nothing
         Nothing
