@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - Removed Webpack
+  - Upgraded to Elm 0.18
   - Added basic i18n functionality
   - Added .editorconfig file
   - Added Webpack
