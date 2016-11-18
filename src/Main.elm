@@ -1,13 +1,12 @@
 import Html exposing (div, button, br, text)
-import Html.App exposing (beginnerProgram)
 import Html.Events exposing (onClick)
 
 {-| This is just a basic application to that Webpack is setup correctly.
   It's just the HTML button page from the Elm examples.
 -}
-main : Program Never
+main : Program Never Int Msg
 main =
-    beginnerProgram { model = 0, view = view, update = update }
+    Html.beginnerProgram { model = 0, view = view, update = update }
 
 
 view : Int -> Html.Html Msg
