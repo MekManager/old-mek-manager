@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npm run clean && webpack -p --bail",
     "clean": "rm -rf dist",
-    "server": "webpack-dev-server --hot --inline",
+    "start": "webpack-dev-server --hot --inline",
     "tdd": "nodemon --watch 'src/' --watch 'tests/' --ext elm --exec 'npm test'",
     "test": "elm-test"
   },
@@ -28,9 +28,9 @@
   },
   "homepage": "https://github.com/MekManager/mek-manager#readme",
   "devDependencies": {
-    "elm": "^0.17.1",
+    "elm": "^0.18.0",
     "elm-hot-loader": "^0.3.4",
-    "elm-test": "^0.17.3",
+    "elm-test": "^0.18.0",
     "elm-webpack-loader": "^3.0.6",
     "nodemon": "^1.11.0",
     "webpack": "^1.13.3",

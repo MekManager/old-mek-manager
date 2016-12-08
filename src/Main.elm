@@ -1,35 +1,96 @@
-import Html exposing (div, button, br, text)
-import Html.App exposing (beginnerProgram)
-import Html.Events exposing (onClick)
+import Html exposing ( Html
+                     , b
+                     , div
+                     , fieldset
+                     , h1
+                     , h3
+                     , option
+                     , p
+                     , select
+                     , button
+                     , label
+                     , br
+                     , text
+                     , input
+                     )
+import Mek exposing (Mek)
+import TechBase exposing (TechBase)
+import Html.Attributes exposing (style, type_, name, checked)
+import Html.Events exposing (onClick, onInput)
 
-{-| This is just a basic application to that Webpack is setup correctly.
-  It's just the HTML button page from the Elm examples.
--}
-main : Program Never
+main : Program Never Mek Msg
 main =
-    beginnerProgram { model = 0, view = view, update = update }
+    Html.beginnerProgram { model = Mek.factory
+                         , view = view
+                         , update = update
+                         }
 
-
-view : Int -> Html.Html Msg
+view : Mek -> Html Msg
 view model =
     div []
-        [ button [ onClick Reset ] [ text "Reset" ]
+        [ h1 [] [ text "Mek Designer" ]
+        , h3 [ style [ ("margin", "0") ] ] [ text "Debug info:" ]
+        , debugInfo "Techbase: " (TechBase.toString model.techBase)
+        , debugInfo "Omnimech: " (toString model.omniMech)
+        , debugInfo "Weight: " (toString model.weight)
         , br [] []
-        , button [ onClick Decrement ] [ text "-" ]
-        , div [] [ text (toString model) ]
-        , button [ onClick Increment ] [ text "+" ]
+        , b [] [ text "Select Tech Base: " ]
+        , select [ onInput ChangeTechBase ]
+                 [ option [] [ text "Inner Sphere" ]
+                 , option [] [ text "Clan" ]
+                 ]
         , br [] []
-        , button [ onClick Reset ] [ text "Reset" ]
+        , b [] [ text "Change Omni Status: " ]
+        , fieldset []
+                   [ label []
+                           [ input [ type_ "radio", name "omni", checked False, onClick (ChangeOmni True) ] []
+                           , text "True"
+                           ]
+                   , label []
+                           [ input [ type_ "radio", name "omni", checked True, onClick (ChangeOmni False) ] []
+                           , text "False"
+                           ]
+                   ]
+        , br [] []
+        , b [] [ text "Change Weight: "]
+        , button [ onClick IncreaseWeight ] [ text "Increase" ]
+        , button [ onClick DecreaseWeight ] [ text "Decrease" ]
         ]
 
-type Msg = Increment | Decrement | Reset
+debugInfo : String -> String -> Html Msg
+debugInfo description value =
+    div []
+        [ b [] [ text description ]
+        , p [ style [ ("display", "inline-block")
+                    , ("margin", "0")
+                    ]
+            ]
+            [ text value ]
+        ]
 
-update : Msg -> Int -> Int
+type Msg = ChangeTechBase String
+         | ChangeOmni Bool
+         | IncreaseWeight
+         | DecreaseWeight
+
+update : Msg -> Mek -> Mek
 update msg model =
     case msg of
-        Increment ->
-            model + 1
-        Decrement ->
-            model - 1
-        Reset ->
-            0
+        ChangeTechBase base ->
+            case base of
+                "Clan" ->
+                    { model | techBase = TechBase.Clan }
+                _ ->
+                    { model | techBase = TechBase.InnerSphere }
+        DecreaseWeight ->
+            if model.weight == 20 then
+                model
+            else
+                { model | weight = model.weight - 5 }
+        IncreaseWeight ->
+            if model.weight == 100 then
+                model
+            else
+                { model | weight = model.weight + 5 }
+        ChangeOmni value ->
+            { model | omniMech = value }
