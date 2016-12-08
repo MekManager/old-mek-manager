@@ -1,4 +1,8 @@
-module Mek exposing (Mek, weightClass, validWeight)
+module Mek exposing (Mek
+                    , factory
+                    , weightClass
+                    , validWeight
+                    )
 
 import TechBase exposing (TechBase)
 import Translateable exposing (..)
@@ -10,6 +14,9 @@ type alias Mek =
     , weight : Int
     }
 
+factory : Mek
+factory =
+    Mek TechBase.InnerSphere False 20
 
 weightClass : Mek -> String
 weightClass mek =
