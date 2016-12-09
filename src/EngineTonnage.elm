@@ -6,21 +6,22 @@ import Maybe
 
 import EngineType exposing (EngineType)
 
-{-| for: Provides a possible engine weight for a rating and type
-    Given an engine rating and an engine type, this will return the possible
-    weight, in tons, of an engine. It is possible that a weight will not exist
-    for a given engine rating, this will result in a return of `Nothing`.
+{-| for: Provides anengine weight for a rating and type
+    Given an engine rating and an engine type, this will return the weight,
+    in tons, of an engine. 0.0 will be returned in the case of an invalid
+    engine rating.
 -}
 for : Int -> EngineType -> Float
-for rating type_ =
-    case type_ of
-      EngineType.ICE      -> first_of rating ice_engines
-      EngineType.Cell     -> first_of rating cell_engines
-      EngineType.Fission  -> first_of rating fission_engines
-      EngineType.Compact  -> first_of rating compact_engines
-      EngineType.Standard -> first_of rating standard_engines
-      EngineType.Light    -> first_of rating light_engines
-      EngineType.XL       -> first_of rating xl_engines
+for rating engineType =
+    let first = first_of rating
+    in case engineType of
+           EngineType.ICE      -> first ice_engines
+           EngineType.Cell     -> first cell_engines
+           EngineType.Fission  -> first fission_engines
+           EngineType.Compact  -> first compact_engines
+           EngineType.Standard -> first standard_engines
+           EngineType.Light    -> first light_engines
+           EngineType.XL       -> first xl_engines
 
 -- UNEXPOSED --
 
