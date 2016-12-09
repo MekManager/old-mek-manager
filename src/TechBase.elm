@@ -1,9 +1,15 @@
 module TechBase exposing (..)
 
+import List
+
 
 type TechBase
     = InnerSphere
     | Clan
+
+list : List TechBase
+list =
+  [ InnerSphere, Clan ]
 
 toString : TechBase -> String
 toString t =

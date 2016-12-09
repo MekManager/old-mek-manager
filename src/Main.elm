@@ -1,6 +1,9 @@
 import Html as H exposing (Html, text)
 import Html.Attributes as A
 import Html.Events as E
+
+import List
+
 import Mek exposing (Mek)
 import TechBase exposing (TechBase)
 
@@ -21,10 +24,7 @@ view model =
         , debugInfo "Weight: " (toString model.weight)
         , H.br [] []
         , H.b [] [ text "Select Tech Base: " ]
-        , H.select [ E.onInput ChangeTechBase ]
-                 [ H.option [] [ text "Inner Sphere" ]
-                 , H.option [] [ text "Clan" ]
-                 ]
+        , H.select [ E.onInput ChangeTechBase ] <| List.map (\t -> H.option [] [ text <| TechBase.toString t ]) TechBase.list
         , H.br [] []
         , H.b [] [ text "Change Omni Status: " ]
         , H.fieldset []
