@@ -6,8 +6,11 @@ import String
 
 import MekTest
 import LocationTest
+import EngineTonnageTest
 
 all : Test
-all =
-    concat
-        [ MekTest.all, LocationTest.all ]
+all = concat
+      [ MekTest.all
+      , LocationTest.all
+      , EngineTonnageTest.all
+      ]
