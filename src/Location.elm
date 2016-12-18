@@ -35,10 +35,10 @@ arm : TwelveSlotComponent
 arm =
     TwelveSlotComponent
         (SixSlotComponent
-            (Just Component.Shoulder)
-            (Just Component.UpperArmActuator)
-            (Just Component.LowerArmActuator)
-            (Just Component.HandActuator)
+            (Just <| Component.factory "Shoulder")
+            (Just <| Component.factory "Upper Arm Actuator")
+            (Just <| Component.factory "Lower Arm Actuator")
+            (Just <| Component.factory "Hand Actuator")
             Nothing
             Nothing)
         empty
@@ -49,17 +49,17 @@ centerTorso : TwelveSlotComponent
 centerTorso =
     TwelveSlotComponent
         (SixSlotComponent
-            (Just Component.Engine)
-            (Just Component.Engine)
-            (Just Component.Engine)
-            (Just Component.Gyro)
-            (Just Component.Gyro)
-            (Just Component.Gyro))
+            (Just <| Component.factory "Engine")
+            (Just <| Component.factory "Engine")
+            (Just <| Component.factory "Engine")
+            (Just <| Component.factory "Gyro")
+            (Just <| Component.factory "Gyro")
+            (Just <| Component.factory "Gyro"))
         (SixSlotComponent
-            (Just Component.Gyro)
-            (Just Component.Engine)
-            (Just Component.Engine)
-            (Just Component.Engine)
+            (Just <| Component.factory "Gyro")
+            (Just <| Component.factory "Engine")
+            (Just <| Component.factory "Engine")
+            (Just <| Component.factory "Engine")
             Nothing
             Nothing)
 
@@ -68,22 +68,22 @@ centerTorso =
 head : SixSlotComponent
 head =
     SixSlotComponent
-        (Just Component.LifeSupport)
-        (Just Component.Sensors)
-        (Just Component.Cockpit)
+        (Just <| Component.factory "Life Support")
+        (Just <| Component.factory "Sensors")
+        (Just <| Component.factory "Cockpit")
         Nothing
-        (Just Component.Sensors)
-        (Just Component.LifeSupport)
+        (Just <| Component.factory "Sensors")
+        (Just <| Component.factory "Life Support")
 
 {- Factory function returning a default leg
 -}
 leg : SixSlotComponent
 leg =
     SixSlotComponent
-        (Just Component.Hip)
-        (Just Component.UpperLegActuator)
-        (Just Component.LowerLegActuator)
-        (Just Component.FootActuator)
+        (Just <| Component.factory "Hip")
+        (Just <| Component.factory "UpperLegActuator")
+        (Just <| Component.factory "LowerLegActuator")
+        (Just <| Component.factory "FootActuator")
         Nothing
         Nothing
 

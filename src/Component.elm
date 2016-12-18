@@ -1,16 +1,12 @@
 module Component exposing (..)
 
-type Component
-    = Cockpit
-    | Engine
-    | FootActuator
-    | HandActuator
-    | Hip
-    | Gyro
-    | LifeSupport
-    | LowerArmActuator
-    | LowerLegActuator
-    | Sensors
-    | Shoulder
-    | UpperArmActuator
-    | UpperLegActuator
+type alias Component =
+    { name : String
+    , damaged : Bool
+    }
+
+{-| A factory function to create a new, undamaged component
+-}
+factory : String -> Component
+factory name =
+    Component name False

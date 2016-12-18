@@ -3,6 +3,7 @@ module LocationTest exposing (all)
 
 import Test exposing (concat, describe, test, Test)
 import Expect exposing (equal)
+import Maybe
 
 import Component
 import Location exposing (..)
@@ -16,9 +17,18 @@ basics : Test
 basics =
     describe "Sanity Checks"
         [ test "A default head's first component should be life support" <| \_ ->
-            equal head.first (Just Component.LifeSupport)
+              let
+                  comp = Maybe.withDefault (Component.factory "") head.first
+              in
+                  Expect.equal comp.name "Life Support"
         , test "A default head's last component should be life support" <| \_ ->
-            equal head.sixth (Just Component.LifeSupport)
+              let
+                  comp = Maybe.withDefault (Component.factory "") head.sixth
+              in
+                  Expect.equal comp.name "Life Support"
         , test "A default head should have an empty slot" <| \_ ->
-            equal head.fourth Nothing
+              let
+                  comp = Maybe.withDefault (Component.factory "") head.fourth
+              in
+                  Expect.equal comp.name ""
         ]
