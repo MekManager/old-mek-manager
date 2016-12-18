@@ -6,6 +6,7 @@ import Test exposing (describe, test, Test)
 import Expect
 
 import Mek exposing (Mek, factory, weightClass, validWeight)
+import Engine exposing (Engine)
 import TechBase exposing (..)
 
 all : Test
@@ -16,7 +17,7 @@ all =
 basics : Test
 basics =
     let
-        mek = Mek InnerSphere False 50
+        mek = Mek InnerSphere False 50 Engine.factory
     in
       describe "Sanity check tests"
           [ test "A mek should have a technology base" <| \_ ->
@@ -58,7 +59,7 @@ basics =
 validation : Test
 validation =
     let
-        mek = Mek InnerSphere False 50
+        mek = Mek InnerSphere False 50 Engine.factory
     in
       describe "Validation tests"
           [ test "A mek that weights 50 tons should be valid" <| \_ ->

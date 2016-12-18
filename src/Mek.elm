@@ -7,16 +7,28 @@ module Mek exposing (Mek
 import TechBase exposing (TechBase)
 import Translateable exposing (..)
 
+import Engine exposing (Engine)
+import EngineType
 
 type alias Mek =
     { techBase : TechBase
     , omniMech : Bool
     , weight : Int
+    , engine : Engine
     }
 
 factory : Mek
 factory =
-    Mek TechBase.InnerSphere False 20
+    let
+      techBase = TechBase.InnerSphere
+      weight   = 20
+      engine   = Engine techBase EngineType.Standard 1 weight
+    in
+      Mek techBase False weight engine
+
+installEngine : Mek -> Engine -> Mek
+installEngine mek engine =
+    { mek | engine = engine }
 
 weightClass : Mek -> String
 weightClass mek =
