@@ -24,16 +24,28 @@ view model =
         , debugInfo "Weight: " (toString model.weight)
         , H.br [] []
         , H.b [] [ text "Select Tech Base: " ]
-        , H.select [ E.onInput ChangeTechBase ] <| List.map (\t -> H.option [] [ text <| TechBase.toString t ]) TechBase.list
+        , H.select [ E.onInput ChangeTechBase ] <| techBaseSelect
         , H.br [] []
         , H.b [] [ text "Change Omni Status: " ]
         , H.fieldset []
                      [ H.label []
-                               [ H.input [ A.type_ "radio", A.name "omni", A.checked False, E.onClick (ChangeOmni True) ] []
+                               [ H.input
+                                 [ A.type_ "radio"
+                                 , A.name "omni"
+                                 , A.checked False
+                                 , E.onClick (ChangeOmni True)
+                                 ]
+                                 []
                                , text "True"
                                ]
                      , H.label []
-                               [ H.input [ A.type_ "radio", A.name "omni", A.checked True, E.onClick (ChangeOmni False) ] []
+                               [ H.input
+                                 [ A.type_ "radio"
+                                 , A.name "omni"
+                                 , A.checked True
+                                 , E.onClick (ChangeOmni False)
+                                 ]
+                                 []
                                , text "False"
                                ]
                      ]
@@ -42,6 +54,10 @@ view model =
         , H.button [ E.onClick IncreaseWeight ] [ text "Increase" ]
         , H.button [ E.onClick DecreaseWeight ] [ text "Decrease" ]
         ]
+
+techBaseSelect : List (Html Msg)
+techBaseSelect =
+  List.map (\t -> H.option [] [ text <| TechBase.toString t ]) TechBase.list
 
 debugInfo : String -> String -> Html Msg
 debugInfo description value =
