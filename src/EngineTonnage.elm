@@ -13,15 +13,17 @@ import EngineType exposing (EngineType)
 -}
 for : Int -> EngineType -> Float
 for rating engineType =
-    let first = first_of rating
-    in case engineType of
-           EngineType.ICE      -> first ice_engines
-           EngineType.Cell     -> first cell_engines
-           EngineType.Fission  -> first fission_engines
-           EngineType.Compact  -> first compact_engines
-           EngineType.Standard -> first standard_engines
-           EngineType.Light    -> first light_engines
-           EngineType.XL       -> first xl_engines
+    let
+        first = first_of rating
+    in
+        case engineType of
+            EngineType.ICE      -> first ice_engines
+            EngineType.Cell     -> first cell_engines
+            EngineType.Fission  -> first fission_engines
+            EngineType.Compact  -> first compact_engines
+            EngineType.Standard -> first standard_engines
+            EngineType.Light    -> first light_engines
+            EngineType.XL       -> first xl_engines
 
 -- UNEXPOSED --
 
