@@ -8,7 +8,8 @@ module Location exposing ( SixSlotComponent
                          )
 
 import Component exposing (..)
-import Maybe exposing (Maybe)
+import List.Extra exposing ((!!))
+import Maybe exposing (Maybe, withDefault)
 
 
 type Location
@@ -29,37 +30,56 @@ type alias TwelveSlotComponent =
     , bottom : SixSlotComponent
     }
 
-{- Factory function returning a default arm
+{-| Syntax sugar because withDefault is so verbose
+-}
+(~>) : a -> Maybe a -> a
+(~>) = withDefault
+
+{-| Monoid transformer for building Locations.
+-}
+(|->) : Location -> Maybe Component -> Location
+(|->) location component =
+  let
+      locationList = toList location
+  in
+      case (List.length locationList) of
+        6 ->
+          location
+        _ ->
+          locationList ++ [component]
+          |> fromList
+
+{-| Factory function returning a default arm
 -}
 arm : TwelveSlotComponent
 arm =
     TwelveSlotComponent
         (SixSlotComponent
-            (Just <| Component.factory "Shoulder")
-            (Just <| Component.factory "Upper Arm Actuator")
-            (Just <| Component.factory "Lower Arm Actuator")
-            (Just <| Component.factory "Hand Actuator")
+            (Component.maybeFactory "Shoulder")
+            (Component.maybeFactory "Upper Arm Actuator")
+            (Component.maybeFactory "Lower Arm Actuator")
+            (Component.maybeFactory "Hand Actuator")
             Nothing
             Nothing)
         empty
 
-{- Factory function returning a default center torso
+{-| Factory function returning a default center torso
 -}
 centerTorso : TwelveSlotComponent
 centerTorso =
     TwelveSlotComponent
         (SixSlotComponent
-            (Just <| Component.factory "Engine")
-            (Just <| Component.factory "Engine")
-            (Just <| Component.factory "Engine")
-            (Just <| Component.factory "Gyro")
-            (Just <| Component.factory "Gyro")
-            (Just <| Component.factory "Gyro"))
+            (Component.maybeFactory "Engine")
+            (Component.maybeFactory "Engine")
+            (Component.maybeFactory "Engine")
+            (Component.maybeFactory "Gyro")
+            (Component.maybeFactory "Gyro")
+            (Component.maybeFactory "Gyro"))
         (SixSlotComponent
-            (Just <| Component.factory "Gyro")
-            (Just <| Component.factory "Engine")
-            (Just <| Component.factory "Engine")
-            (Just <| Component.factory "Engine")
+            (Component.maybeFactory "Gyro")
+            (Component.maybeFactory "Engine")
+            (Component.maybeFactory "Engine")
+            (Component.maybeFactory "Engine")
             Nothing
             Nothing)
 
@@ -68,22 +88,22 @@ centerTorso =
 head : SixSlotComponent
 head =
     SixSlotComponent
-        (Just <| Component.factory "Life Support")
-        (Just <| Component.factory "Sensors")
-        (Just <| Component.factory "Cockpit")
+        (Component.maybeFactory "Life Support")
+        (Component.maybeFactory "Sensors")
+        (Component.maybeFactory "Cockpit")
         Nothing
-        (Just <| Component.factory "Sensors")
-        (Just <| Component.factory "Life Support")
+        (Component.maybeFactory "Sensors")
+        (Component.maybeFactory "Life Support")
 
 {- Factory function returning a default leg
 -}
 leg : SixSlotComponent
 leg =
     SixSlotComponent
-        (Just <| Component.factory "Hip")
-        (Just <| Component.factory "UpperLegActuator")
-        (Just <| Component.factory "LowerLegActuator")
-        (Just <| Component.factory "FootActuator")
+        (Component.maybeFactory "Hip")
+        (Component.maybeFactory "UpperLegActuator")
+        (Component.maybeFactory "LowerLegActuator")
+        (Component.maybeFactory "FootActuator")
         Nothing
         Nothing
 
@@ -95,6 +115,8 @@ sideTorso =
         empty
         empty
 
+{-| Turns a location into a list of Maybe Components.
+-}
 toList : Location -> List (Maybe Component)
 toList location =
     case location of
@@ -103,6 +125,19 @@ toList location =
         TwelveSlot component ->
             sixToList component.top ++ sixToList component.bottom
 
+{-| Takes a list of Maybe Components and turns them into a SixSlot location.
+-}
+fromList : List (Maybe Component) -> Location
+fromList list =
+  SixSlotComponent
+    (Nothing ~> (list !! 0))
+    (Nothing ~> (list !! 1))
+    (Nothing ~> (list !! 2))
+    (Nothing ~> (list !! 3))
+    (Nothing ~> (list !! 4))
+    (Nothing ~> (list !! 5))
+    |> SixSlot
+
 sixToList : SixSlotComponent -> List (Maybe Component)
 sixToList c =
     [c.first] ++ [c.second] ++ [c.third] ++ [c.fourth] ++ [c.fifth] ++ [c.sixth]
@@ -110,6 +145,18 @@ sixToList c =
 -- UNEXPOSED --
 {-| Factory function returning an empty SixSlot
 -}
+keys: List (
+  { b
+  | first : a
+  , second : a
+  , third : a
+  , fourth : a
+  , fifth : a
+  , sixth : a
+  } -> a)
+keys =
+  [.first, .second, .third, .fourth, .fifth, .sixth]
+
 empty : SixSlotComponent
 empty =
     SixSlotComponent
