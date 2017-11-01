@@ -2,6 +2,8 @@ module Mek exposing (Mek
                     , factory
                     , weightClass
                     , validWeight
+                    , weightRange
+                    , light
                     )
 
 import TechBase exposing (TechBase)
@@ -42,6 +44,40 @@ weightClass mek =
         "Assault"
     else
         "Invalid"
+
+betterWeightClass : Mek -> String
+betterWeightClass mek =
+    if light mek.weight then
+      "Light"
+    else if medium mek.weight then
+      "Medium"
+    else if heavy mek.weight then
+      "Heavy"
+    else if assault mek.weight then
+      "Assault"
+    else
+      "Invalid"
+
+weightRange : Int -> Int -> Int -> Bool
+weightRange from to val =
+  val >= from && val <= to
+
+light : Int -> Bool
+light =
+  weightRange 20 35
+
+medium : Int -> Bool
+medium =
+  weightRange 40 55
+
+heavy : Int -> Bool
+heavy =
+  weightRange 60 75
+
+assault : Int -> Bool
+assault =
+  weightRange 80 100
+
 
 validWeight : Mek -> (Bool, Translateable)
 validWeight mek =
